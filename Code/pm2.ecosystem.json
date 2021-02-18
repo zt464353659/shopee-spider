@@ -1,0 +1,41 @@
+{
+  "apps":{
+      "name": "Shopee-Api",
+      "script": "./src/app.js",
+      "cwd": "./",
+      "log_date_format": "YYYY-MM-DD HH:mm Z",
+      "error_file": "./util/pm2log/pm2-error.log",
+      "out_file": "./util/pm2log/pm2-log.log",
+      "pid_file": "./util/pid/shopee-chat.pid",
+      "min_uptime": "200s",
+      "max_restarts": 10,
+      "max_memory_restart": "1M",
+      "cron_restart": "1 0 * * *",
+      "watch": false,
+      "merge_logs": true,
+      "exec_interpreter": "node",
+      "exec_mode": "cluster",
+      "autorestart": false,
+      "vizion": false,
+      "env":{
+        "COMMON_VARIABLE": "true"
+      },
+      "env_production": {
+        "MSF_ENV": "docker"
+      }
+  },
+  "deploy":{
+      "docker": {
+        "user": "Shopee-Api",
+        "host": ["190.168.3.144"],
+        "ref": "origin/master",
+        "repo": " http://git.sfc.com/suntek/Shopee-API.git",
+        "path": "/",
+        "ssh_options": "StrictHostKeyChecking=no",
+        "post-deploy": "npm install && npm run build && pm2 startOrRestart pm2.ecosystem.json --env docker",
+        "env": {
+           "MSF_ENV": "docker"
+          }
+        }   
+    }
+}
